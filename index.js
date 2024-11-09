@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const app = express();
 app.use(express.json());
 require('dotenv').config({
@@ -24,7 +25,7 @@ app.post("/webhook", async (req, res) => {
             req.body.entry?.[0].changes?.[0].value?.metadata?.phone_number_id;
 
         // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-        await fetch({
+        await axios({
             method:"POST",
             url: `https://graph.facebook.com/v21.0/${business_phone_number_id}/messages`,
             headers: {
@@ -53,7 +54,7 @@ app.post("/webhook", async (req, res) => {
 
             }
         })    // mark incoming message as read
-        await fetch({
+        await axios({
             method: "POST",
             url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
             headers: {
@@ -77,7 +78,8 @@ app.post("/webhook", async (req, res) => {
         const body = `Hello ${custName}!\n Welcome to Dukkanpe, to explore our products type \`/order\``
 
         // send a reply message as per the docs here https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages
-        await fetch({
+        console.log({business_phone_number_id})
+        await axios({
             method:"POST",
             url: `https://graph.facebook.com/v21.0/${business_phone_number_id}/messages`,
             headers: {
@@ -95,7 +97,7 @@ app.post("/webhook", async (req, res) => {
 
             }
         })    // mark incoming message as read
-        await fetch({
+        await axios({
             method: "POST",
             url: `https://graph.facebook.com/v18.0/${business_phone_number_id}/messages`,
             headers: {
